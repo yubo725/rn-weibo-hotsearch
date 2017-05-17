@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import { 
+import {
   AppRegistry,
   StyleSheet,
   Text,
@@ -29,14 +29,14 @@ export default class AwesomeProject extends Component {
   	var listData = [];
   	for (var i = 0; i < topTabNames.length; i++) {
   		topTabs.push(
-  			<TouchableOpacity onPress={this.handleTopTabClick} key={"tab-" + i} style={styles.topTabItem}>
+  			<TouchableOpacity onPress={this.handleTopTabClick.bind(this, i)} key={"tab-" + i} style={styles.topTabItem}>
 	  			<View>
 					<Image style={styles.topTabItemImage} source={require('./images/ic_person.png')} />
 					<Text>{topTabNames[i]}</Text>
 				</View>
 			</TouchableOpacity>
-		);
-		topTabs.push(<View key={"divider-" + i} style={styles.topTabDivider} />);
+  		);
+  		topTabs.push(<View key={"divider-" + i} style={styles.topTabDivider} />);
   	}
   	topTabs.splice(-1, 1);
   	for (var i = 0; i < 20; i++) {
@@ -58,34 +58,36 @@ export default class AwesomeProject extends Component {
     		</View>
     		<View style={{height: 5, backgroundColor: '#F2F2F2'}} />
     		<Text style={{paddingLeft: 15, paddingTop: 5, paddingRight: 15, paddingBottom: 5, backgroundColor: '#F2F2F2'}}>实时搜索热点，每分钟更新一次</Text>
-    		<FlatList 
+    		<FlatList
     			style={{backgroundColor: '#FFFFFF'}}
-				data={listData}
-				renderItem={this.renderRow}
-    		/>
+  				data={listData}
+  				renderItem={this.renderRow}
+      	/>
     	</View>
     );
   }
-  renderRow(item) {
-	return (
-		<View>
-			<TouchableOpacity onPress={this.handleListItemClick} activeOpacity={0.5}>
-				<View style={listItemStyles.listItemContainer}>
-					<Text style={listItemStyles.listItemIndexLabel}>{item.index + 1}</Text>
-					<Text style={listItemStyles.listItemTitleLabel}>这里显示热搜标题</Text>
-					<Text style={listItemStyles.listItemCountLabel}>626645</Text>
-					<Image style={listItemStyles.listItemImage} source={require('./images/ic_hot.png')} />
-				</View>
-			</TouchableOpacity>
-			<View style={{height: 1 / PixelRatio.get(), backgroundColor: '#D3D3D3'}} />
-		</View>
-	);
+  renderRow = (item) => {
+  	return (
+  		<View>
+  			<TouchableOpacity activeOpacity={0.5} onPress={this.handleListItemClick.bind(this, item)}>
+  				<View style={listItemStyles.listItemContainer}>
+  					<Text style={listItemStyles.listItemIndexLabel}>{item.index + 1}</Text>
+  					<Text style={listItemStyles.listItemTitleLabel}>这里显示热搜标题</Text>
+  					<Text style={listItemStyles.listItemCountLabel}>626645</Text>
+  					<Image style={listItemStyles.listItemImage} source={require('./images/ic_hot.png')} />
+  				</View>
+  			</TouchableOpacity>
+  			<View style={{height: 1 / PixelRatio.get(), backgroundColor: '#D3D3D3'}} />
+  		</View>
+  	);
   }
-  handleTopTabClick(item) {
-	console.log(item);
+  handleTopTabClick(index) {
+  	console.log(index);
+  	// ToastAndroid.show('click top tab', ToastAndroid.SHORT);
   }
-  handleListItemClick() {
-
+  handleListItemClick(item) {
+  	console.log(item);
+  	ToastAndroid.show('click item ' + item.index, ToastAndroid.SHORT);
   }
 }
 
